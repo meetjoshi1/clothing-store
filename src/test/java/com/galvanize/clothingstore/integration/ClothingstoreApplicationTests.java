@@ -1,4 +1,4 @@
-package com.galvanize.clothingstore;
+package com.galvanize.clothingstore.integration;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
