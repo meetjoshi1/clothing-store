@@ -1,0 +1,16 @@
+version: "3.9"
+services:
+  clothing_store_db:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: password
+  clothing_store_app:
+    image: clothing_store_service
+    ports:
+      - "1000:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: dockercompose
+    depends_on:
+      - clothing_store_db
