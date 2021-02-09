@@ -43,7 +43,7 @@ asciidoctor {
 asciidoctor.doLast {
     copy {
         from 'build/asciidoc/html5'
-        into 'src/main/resources/static'
+        into 'build/resources/main/static'
         include 'index.html'
     }
 }
