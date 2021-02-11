@@ -15,7 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs(outputDir = "build/target/snippets")
-class HomeControllerRestDocs {
+class ProductsControllerRestDocs {
 
     @Autowired
     MockMvc mockMvc;

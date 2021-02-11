@@ -1,0 +1,14 @@
+As a manager, I want to add products to store.
+
+jackets
+
+season: String (winter, spring, summer, fall)
+size: String
+color: String
+style: String
+adultSize: Boolean
+price: Long (number in cents)
+/api/products/jackets   GET     200 OK
+ A listing of all available products.
+/api/products/jackets    POST   201 CREATED
+Create a new product.
