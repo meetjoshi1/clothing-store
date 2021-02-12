@@ -1,7 +1,6 @@
 package com.galvanize.clothingstore.serviceTest;
 
-import com.galvanize.clothingstore.model.Jacket;
-import com.galvanize.clothingstore.model.Season;
+import com.galvanize.clothingstore.model.*;
 import com.galvanize.clothingstore.repository.ProductRepository;
 import com.galvanize.clothingstore.service.ProductService;
 import org.junit.jupiter.api.Test;
@@ -36,4 +35,12 @@ public class ProductServiceTest {
         verify(productRepository).save(jacket);
     }
 
+    @Test
+    public void whenAddShoes(){
+        Product shoes = new Shoes(8, "4", ShoeType.sandal, "MATERIAL", "NIKE", true, "BLUE", 80l);
+        when(productRepository.save(any())).thenReturn(shoes);
+        Product actual = service.add(shoes);
+        assertEquals(shoes, actual);
+        verify(productRepository).save(shoes);
+    }
 }
