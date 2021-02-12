@@ -61,7 +61,7 @@ public class ProductServiceTest {
 
     @Test
     public void whenAddShirt(){
-        Shirt shirt = new Shirt(ShirtType.TEE.name(), 3, 5,
+        Shirt shirt = new Shirt(ShirtType.TEE.name(), 0, 0,
                 "10","blue", true, 2000l);
         when(shirtRepository.save(any())).thenReturn(shirt);
         Shirt actual = service.addShirt(shirt);
