@@ -11,30 +11,23 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-@NoArgsConstructor
 @Getter
-//@EqualsAndHashCode
 @ToString
-public class Jacket {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+public class Jacket extends Product {
     private String season;
-    private String size;
-    private String color;
     private String style;
     private boolean adultSize;
-    private long price;
+    private String size;
 
 
     public Jacket(String season, String size, String color, String style, boolean adultSize, long price) {
         this.season = season;
         this.size = size;
-        this.color = color;
         this.style = style;
         this.adultSize = adultSize;
         this.price = price;
+        this.color = color;
     }
 
+    public Jacket() {}
 }

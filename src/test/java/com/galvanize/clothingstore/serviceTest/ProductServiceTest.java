@@ -31,7 +31,7 @@ public class ProductServiceTest {
         Jacket jacket = new Jacket(Season.WINTER.name(), "10", "Blue",
                 "style",true, 1900l);
         when(productRepository.save(any())).thenReturn(jacket);
-        Jacket actual = service.add(jacket);
+        Jacket actual = (Jacket) service.add(jacket);
         assertEquals(jacket, actual);
         verify(productRepository).save(jacket);
     }
