@@ -1,7 +1,9 @@
 package com.galvanize.clothingstore.serviceTest;
 
 import com.galvanize.clothingstore.model.*;
-import com.galvanize.clothingstore.repository.ProductRepository;
+import com.galvanize.clothingstore.repository.JacketRepository;
+import com.galvanize.clothingstore.repository.ShirtRepository;
+import com.galvanize.clothingstore.repository.ShoesRepository;
 import com.galvanize.clothingstore.service.ProductService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,7 +20,13 @@ import static org.mockito.Mockito.when;
 public class ProductServiceTest {
 
     @Mock
-    private ProductRepository productRepository;
+    private JacketRepository jacketRepository;
+
+    @Mock
+    private ShoesRepository shoesRepository;
+
+    @Mock
+    private ShirtRepository shirtRepository;
 
 
     @InjectMocks
@@ -29,18 +37,29 @@ public class ProductServiceTest {
     public void whenAddJacket(){
         Jacket jacket = new Jacket(Season.WINTER.name(), "10", "Blue",
                 "style",true, 1900l);
-        when(productRepository.save(any())).thenReturn(jacket);
-        Jacket actual = (Jacket) service.add(jacket);
+        when(jacketRepository.save(any())).thenReturn(jacket);
+        Jacket actual = service.addJacket(jacket);
         assertEquals(jacket, actual);
-        verify(productRepository).save(jacket);
+        verify(jacketRepository).save(jacket);
     }
 
     @Test
     public void whenAddShoes(){
-        Product shoes = new Shoes(8, "4", ShoeType.sandal, "MATERIAL", "NIKE", true, "BLUE", 80l);
-        when(productRepository.save(any())).thenReturn(shoes);
-        Product actual = service.add(shoes);
+        Shoes shoes = new Shoes(8, "4", ShoeType.sandal, "MATERIAL", "NIKE", true, "BLUE", 80l);
+        when(shoesRepository.save(any())).thenReturn(shoes);
+        Shoes actual = service.addShoe(shoes);
         assertEquals(shoes, actual);
-        verify(productRepository).save(shoes);
+        verify(shoesRepository).save(shoes);
     }
+
+    @Test
+    public void whenAddShirt(){
+        Shirt shirt = new Shirt(ShirtType.TEE.name(), 3, 5,
+                "10","blue", true, 2000l);
+        when(shirtRepository.save(any())).thenReturn(shirt);
+        Shirt actual = service.addShirt(shirt);
+        assertEquals(shirt, actual);
+        verify(shirtRepository).save(shirt);
+    }
+
 }

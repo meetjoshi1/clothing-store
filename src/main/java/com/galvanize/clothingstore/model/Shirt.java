@@ -1,9 +1,7 @@
 package com.galvanize.clothingstore.model;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,28 +10,26 @@ import javax.persistence.Id;
 
 @Entity
 @Getter
-@ToString
-public class Jacket {
-
+@NoArgsConstructor
+public class Shirt {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     protected Long price;
     protected String color;
-    private String season;
-    private String style;
-    private boolean adultSize;
+    private String type;
+    private int sleeve;
+    private int neck;
     private String size;
+    private boolean longSleeve;
 
-
-    public Jacket(String season, String size, String color, String style, boolean adultSize, long price) {
-        this.season = season;
+    public Shirt(String type, int sleeve, int neck, String size, String color, boolean longSleeve, long price) {
+        this.type = type;
+        this.sleeve = sleeve;
+        this.neck = neck;
         this.size = size;
-        this.style = style;
-        this.adultSize = adultSize;
-        this.price = price;
         this.color = color;
+        this.longSleeve = longSleeve;
+        this.price = price;
     }
-
-    public Jacket() {}
 }

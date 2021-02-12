@@ -11,8 +11,13 @@ import javax.persistence.Id;
 @Getter
 @Setter
 @ToString
-public class Shoes extends Product {
+public class Shoes {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    protected Long price;
+    protected String color;
     private String height;
     private ShoeType type;
     private String material;
