@@ -45,4 +45,10 @@ public class ProductsController {
 
     }
 
+    @GetMapping("/jackets")
+    public List<Jacket> getJackets(){
+        return productService.getAllJackets();
+
+    }
+
 }

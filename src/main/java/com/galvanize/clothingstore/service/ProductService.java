@@ -48,4 +48,8 @@ public class ProductService {
 
         return shirtRepository.save(shirt);
     }
+
+    public List<Jacket> getAllJackets() {
+        return jacketRepository.findAll();
+    }
 }

@@ -14,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -40,9 +41,9 @@ public class ProductServiceTest {
 
 
     @Test
-    public void whenAddJacket(){
+    public void whenAddJacket() {
         Jacket jacket = new Jacket(Season.WINTER.name(), "10", "Blue",
-                "style",true, 1900l);
+                "style", true, 1900l);
         when(jacketRepository.save(any())).thenReturn(jacket);
         Jacket actual = service.addJacket(jacket);
         assertEquals(jacket, actual);
@@ -50,7 +51,7 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void whenAddShoes(){
+    public void whenAddShoes() {
         Shoes shoes = new Shoes(8, "4", ShoeType.sandal, "MATERIAL", "NIKE", true, "BLUE", 80l);
         when(shoesRepository.save(any())).thenReturn(shoes);
         Shoes actual = service.addShoe(shoes);
@@ -59,21 +60,22 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void whenAddShirt(){
+    public void whenAddShirt() {
         Shirt shirt = new Shirt(ShirtType.TEE.name(), 3, 5,
-                "10","blue", true, 2000l);
+                "10", "blue", true, 2000l);
         when(shirtRepository.save(any())).thenReturn(shirt);
         Shirt actual = service.addShirt(shirt);
         assertEquals(shirt, actual);
         verify(shirtRepository).save(shirt);
     }
+
     @Test
-    public void whenAddShirt_TypeDress(){
+    public void whenAddShirt_TypeDress() {
         Shirt shirt = new Shirt(ShirtType.DRESS.name(), 0, 0,
-                "10","blue", true, 2000l);
+                "10", "blue", true, 2000l);
 
         DressShirtException exception =
-                assertThrows(DressShirtException.class, ()->{
+                assertThrows(DressShirtException.class, () -> {
                     service.addShirt(shirt);
                 });
 
@@ -83,22 +85,22 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void whenAddShirt_TypeAnyOtherThanDress(){
+    public void whenAddShirt_TypeAnyOtherThanDress() {
         Shirt shirt1 = new Shirt(ShirtType.TEE.name(), 1, 1,
-                "","blue", true, 2000l);
+                "", "blue", true, 2000l);
 
         ShirtSizeException exception =
-                assertThrows(ShirtSizeException.class, ()->{
+                assertThrows(ShirtSizeException.class, () -> {
                     service.addShirt(shirt1);
                 });
 
         assertEquals("Please enter size for shirt!", exception.getMessage());
 
         Shirt shirt2 = new Shirt(ShirtType.TEE.name(), 1, 1,
-                "8","blue", true, 2000l);
+                "8", "blue", true, 2000l);
 
         exception =
-                assertThrows(ShirtSizeException.class, ()->{
+                assertThrows(ShirtSizeException.class, () -> {
                     service.addShirt(shirt2);
                 });
 
@@ -108,12 +110,23 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void getShoesFromTheStore(){
+    public void getShoesFromTheStore() {
         List<Shoes> shoes = Arrays.asList(new Shoes(8, "4", ShoeType.sandal, "MATERIAL", "NIKE", true, "BLUE", 80l));
         when(shoesRepository.findAll()).thenReturn(shoes);
         List<Shoes> actual = service.getAllShoes();
         assertEquals(shoes, actual);
         assertEquals(1, actual.size());
         verify(shoesRepository).findAll();
+    }
+
+    @Test
+    public void getJacketsFromTheStore() {
+        List<Jacket> jackets = Collections.singletonList(new Jacket(Season.WINTER.name(), "10", "Blue",
+                "style", true, 1900L));
+        when(jacketRepository.findAll()).thenReturn(jackets);
+        List<Jacket> actual = service.getAllJackets();
+        assertEquals(jackets, actual);
+        assertEquals(1, actual.size());
+        verify(jacketRepository).findAll();
     }
 }

@@ -41,8 +41,8 @@ public class ProductsControllerTest {
                 .andExpect(jsonPath("$.style").value("style"))
                 .andExpect(jsonPath("$.size").value("10"))
                 .andExpect(jsonPath("$.color").value("Blue"))
-                .andExpect(jsonPath("$.adultSize").value("true"))
-                .andExpect(jsonPath("$.price").value("1900"));
+                .andExpect(jsonPath("$.adultSize").value(true))
+                .andExpect(jsonPath("$.price").value(1900L));
 
     }
 
@@ -101,12 +101,10 @@ public class ProductsControllerTest {
                 .andExpect(jsonPath("$.neck").value("5"))
                 .andExpect(jsonPath("$.size").value("10"))
                 .andExpect(jsonPath("$.color").value("blue"))
-                .andExpect(jsonPath("$.longSleeve").value("true"))
+                .andExpect(jsonPath("$.longSleeve").value(true))
                 .andExpect(jsonPath("$.price").value("2000"));
 
     }
-
-
 
     @Test
     public void whenAddShirtToStore_TypeDress() throws Exception {
@@ -142,6 +140,25 @@ public class ProductsControllerTest {
                         result.getResolvedException().getMessage()));
 
 
+    }
+
+    @Test
+    public void getJacketsFromTheStore() throws Exception {
+        Jacket jacket = new Jacket(Season.WINTER.name(), "10", "Blue",
+                "style", true, 1900L);
+
+        mockMvc.perform(post("/api/products/jackets")
+                        .contentType((MediaType.APPLICATION_JSON))
+                        .content(objectMapper.writeValueAsString(jacket)))
+                .andExpect(status().isCreated());
+
+        mockMvc.perform(get("/api/products/jackets")).andExpect(status().isOk())
+                .andExpect(jsonPath("[0].season").value(Season.WINTER.name()))
+                .andExpect(jsonPath("[0].size").value("10"))
+                .andExpect(jsonPath("[0].color").value("Blue"))
+                .andExpect(jsonPath("[0].style").value("style"))
+                .andExpect(jsonPath("[0].adultSize").value(true))
+                .andExpect(jsonPath("[0].price").value(1900L));
     }
 
 }
