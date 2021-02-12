@@ -11,6 +11,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
@@ -62,4 +65,13 @@ public class ProductServiceTest {
         verify(shirtRepository).save(shirt);
     }
 
+    @Test
+    public void getShoesFromTheStore(){
+        List<Shoes> shoes = Arrays.asList(new Shoes(8, "4", ShoeType.sandal, "MATERIAL", "NIKE", true, "BLUE", 80l));
+        when(shoesRepository.findAll()).thenReturn(shoes);
+        List<Shoes> actual = service.getAllShoes();
+        assertEquals(shoes, actual);
+        assertEquals(1, actual.size());
+        verify(shoesRepository).findAll();
+    }
 }

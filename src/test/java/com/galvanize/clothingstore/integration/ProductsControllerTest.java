@@ -63,26 +63,6 @@ public class ProductsControllerTest {
     }
 
     @Test
-    public void getShoesFromTheStore() throws Exception {
-        Shoes shoes = new Shoes(8, "4", ShoeType.sandal, "MATERIAL", "NIKE", true, "BLUE", 80l);
-        mockMvc
-                .perform(post("/api/products/shoes")
-                        .contentType((MediaType.APPLICATION_JSON))
-                        .content(objectMapper.writeValueAsString(shoes)))
-                .andExpect(status().isCreated());
-
-        mockMvc.perform(get("/api/products/shoes")).andExpect(status().isOk())
-                .andExpect(jsonPath("[0].size").value("8"))
-                .andExpect(jsonPath("[0].height").value("4"))
-                .andExpect(jsonPath("[0].type").value(ShoeType.sandal.name()))
-                .andExpect(jsonPath("[0].material").value("MATERIAL"))
-                .andExpect(jsonPath("[0].brand").value("NIKE"))
-                .andExpect(jsonPath("[0].laced").value("true"))
-                .andExpect(jsonPath("[0].color").value("BLUE"))
-                .andExpect(jsonPath("[0].price").value("80"));
-    }
-
-    @Test
     public void whenAddShirtToStore() throws Exception {
         Shirt shirt = new Shirt(ShirtType.TEE.name(), 3, 5,
                 "10","blue", true, 2000l);
@@ -100,6 +80,26 @@ public class ProductsControllerTest {
                 .andExpect(jsonPath("$.longSleeve").value("true"))
                 .andExpect(jsonPath("$.price").value("2000"));
 
+    }
+
+    @Test
+    public void getShoesFromTheStore() throws Exception {
+        Shoes shoes = new Shoes(8, "4", ShoeType.sandal, "MATERIAL", "NIKE", true, "BLUE", 80l);
+        mockMvc
+                .perform(post("/api/products/shoes")
+                        .contentType((MediaType.APPLICATION_JSON))
+                        .content(objectMapper.writeValueAsString(shoes)))
+                .andExpect(status().isCreated());
+
+        mockMvc.perform(get("/api/products/shoes")).andExpect(status().isOk())
+                .andExpect(jsonPath("[0].size").value("8"))
+                .andExpect(jsonPath("[0].height").value("4"))
+                .andExpect(jsonPath("[0].type").value(ShoeType.sandal.name()))
+                .andExpect(jsonPath("[0].material").value("MATERIAL"))
+                .andExpect(jsonPath("[0].brand").value("NIKE"))
+                .andExpect(jsonPath("[0].laced").value("true"))
+                .andExpect(jsonPath("[0].color").value("BLUE"))
+                .andExpect(jsonPath("[0].price").value("80"));
     }
 
 }
