@@ -56,4 +56,20 @@ public class ProductService {
     public List<Jacket> getAllJackets() {
         return jacketRepository.findAll();
     }
+
+    public void deleteProduct(String product, Long productId) {
+        if(product.equals("jacket")){
+           Jacket jacket = jacketRepository.getOne(productId);
+           if(jacket!=null)
+                jacketRepository.delete(jacket);
+        }else if(product.equals("shirt")){
+            Shirt shirt = shirtRepository.getOne(productId);
+            if(shirt!=null)
+                shirtRepository.delete(shirt);
+        }else if(product.equals("shoes")){
+            Shoes shoes = shoesRepository.getOne(productId);
+            if(shoes!=null)
+                shoesRepository.delete(shoes);
+        }
+    }
 }

@@ -10,6 +10,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+
+import javax.transaction.Transactional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -19,6 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@Transactional
 public class ProductsControllerTest {
 
     @Autowired
@@ -26,6 +30,7 @@ public class ProductsControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
+
 
 
 
@@ -189,4 +194,72 @@ public class ProductsControllerTest {
                 .andExpect(jsonPath("[0].price").value(1900L));
     }
 
+
+    @Test
+    public void whenDeleteProduct_Jacket() throws Exception {
+        Jacket jacket = new Jacket(Season.WINTER.name(), "10", "Blue",
+                "style", true, 1900L);
+
+        MvcResult mvcResult = mockMvc.perform(post("/api/products/jackets")
+                .contentType((MediaType.APPLICATION_JSON))
+                .content(objectMapper.writeValueAsString(jacket)))
+                .andExpect(status().isCreated())
+                .andReturn();
+
+        Jacket postResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), Jacket.class);
+
+        mockMvc.perform(delete("/api/products/jacket/"+postResponse.getId()))
+                .andExpect(status().isNoContent());
+
+        mockMvc.perform(get("/api/products/jackets")).andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(0));
+
+
+
+    }
+
+    @Test
+    public void whenDeleteProduct_Shirt() throws Exception {
+        Shirt shirt = new Shirt(ShirtType.TEE.name(), 0, 0,
+                "10","blue", true, 2000l);
+
+        MvcResult mvcResult = mockMvc.perform(post("/api/products/shirts")
+                .contentType((MediaType.APPLICATION_JSON))
+                .content(objectMapper.writeValueAsString(shirt)))
+                .andExpect(status().isCreated())
+                .andReturn();
+
+        Shirt postResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), Shirt.class);
+
+        mockMvc.perform(delete("/api/products/shirt/"+postResponse.getId()))
+                .andExpect(status().isNoContent());
+
+        mockMvc.perform(get("/api/products/shirts")).andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(0));
+
+
+
+    }
+
+    @Test
+    public void whenDeleteProduct_Shoes() throws Exception {
+        Shoes shoes = new Shoes(8, "4", ShoeType.sandal, "MATERIAL", "NIKE", true, "BLUE", 80l);
+
+        MvcResult mvcResult = mockMvc.perform(post("/api/products/shoes")
+                .contentType((MediaType.APPLICATION_JSON))
+                .content(objectMapper.writeValueAsString(shoes)))
+                .andExpect(status().isCreated())
+                .andReturn();
+
+        Shoes postResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), Shoes.class);
+
+        mockMvc.perform(delete("/api/products/shoes/"+postResponse.getId()))
+                .andExpect(status().isNoContent());
+
+        mockMvc.perform(get("/api/products/shoes")).andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(0));
+
+
+
+    }
 }

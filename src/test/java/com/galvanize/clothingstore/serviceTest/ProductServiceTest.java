@@ -145,4 +145,30 @@ public class ProductServiceTest {
         assertEquals(1, actual.size());
         verify(jacketRepository).findAll();
     }
+
+    @Test
+    public void whenDeleteProduct_Jacket() {
+        Jacket jacket = new Jacket(Season.WINTER.name(), "10", "Blue",
+                "style", true, 1900L);
+        when(jacketRepository.getOne(any())).thenReturn(jacket);
+        service.deleteProduct("jacket", 1L);
+        verify(jacketRepository).delete(jacket);
+    }
+
+    @Test
+    public void whenDeleteProduct_Shirt() {
+        Shirt shirt = new Shirt(ShirtType.TEE.name(), 0, 0,
+                "10","blue", true, 2000l);
+        when(shirtRepository.getOne(any())).thenReturn(shirt);
+        service.deleteProduct("shirt", 1L);
+        verify(shirtRepository).delete(shirt);
+    }
+
+    @Test
+    public void whenDeleteProduct_Shoes() {
+        Shoes shoes = new Shoes(8, "4", ShoeType.sandal, "MATERIAL", "NIKE", true, "BLUE", 80l);
+        when(shoesRepository.getOne(any())).thenReturn(shoes);
+        service.deleteProduct("shoes", 1L);
+        verify(shoesRepository).delete(shoes);
+    }
 }
