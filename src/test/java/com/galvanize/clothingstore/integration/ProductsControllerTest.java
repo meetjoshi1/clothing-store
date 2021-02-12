@@ -1,6 +1,8 @@
 package com.galvanize.clothingstore.integration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.galvanize.clothingstore.exceptions.DressShirtException;
+import com.galvanize.clothingstore.exceptions.ShirtSizeException;
 import com.galvanize.clothingstore.model.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -99,6 +103,44 @@ public class ProductsControllerTest {
                 .andExpect(jsonPath("$.color").value("blue"))
                 .andExpect(jsonPath("$.longSleeve").value("true"))
                 .andExpect(jsonPath("$.price").value("2000"));
+
+    }
+
+
+
+    @Test
+    public void whenAddShirtToStore_TypeDress() throws Exception {
+        Shirt shirt = new Shirt(ShirtType.DRESS.name(),0,0,
+                "10","blue", true, 2000l);
+
+        mockMvc
+                .perform(post("/api/products/shirts")
+                        .contentType((MediaType.APPLICATION_JSON))
+                        .content(objectMapper.writeValueAsString(shirt)))
+                .andExpect(status().isBadRequest())
+                .andExpect(result -> assertTrue(result.getResolvedException()
+                instanceof DressShirtException))
+                .andExpect(result -> assertEquals("Please enter sleeve and neck measurements for Dress shirt!",
+                        result.getResolvedException().getMessage()));
+
+
+    }
+
+    @Test
+    public void whenAddShirtToStore_TypeAnyOtherThanDress() throws Exception {
+        Shirt shirt = new Shirt(ShirtType.TEE.name(),1,1,
+                "","blue", true, 2000l);
+
+        mockMvc
+                .perform(post("/api/products/shirts")
+                        .contentType((MediaType.APPLICATION_JSON))
+                        .content(objectMapper.writeValueAsString(shirt)))
+                .andExpect(status().isBadRequest())
+                .andExpect(result -> assertTrue(result.getResolvedException()
+                        instanceof ShirtSizeException))
+                .andExpect(result -> assertEquals("Please enter size for shirt!",
+                        result.getResolvedException().getMessage()));
+
 
     }
 

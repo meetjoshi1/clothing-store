@@ -1,5 +1,7 @@
 package com.galvanize.clothingstore.service;
 
+import com.galvanize.clothingstore.exceptions.DressShirtException;
+import com.galvanize.clothingstore.exceptions.ShirtSizeException;
 import com.galvanize.clothingstore.model.Jacket;
 import com.galvanize.clothingstore.model.Shirt;
 import com.galvanize.clothingstore.model.Shoes;
@@ -38,6 +40,12 @@ public class ProductService {
     }
 
     public Shirt addShirt(Shirt shirt) {
+        if(shirt.getType().equals("DRESS") && ((shirt.getNeck()<1 || shirt.getSleeve()<1) || !shirt.getSize().isEmpty()) )
+            throw new DressShirtException("Please enter sleeve and neck measurements for Dress shirt!");
+
+        if(!shirt.getType().equals("DRESS") && ((shirt.getSize().isEmpty()) || (shirt.getNeck()>0 || shirt.getSleeve()>0)))
+            throw new ShirtSizeException("Please enter size for shirt!");
+
         return shirtRepository.save(shirt);
     }
 }

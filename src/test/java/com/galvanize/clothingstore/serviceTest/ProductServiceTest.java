@@ -1,5 +1,7 @@
 package com.galvanize.clothingstore.serviceTest;
 
+import com.galvanize.clothingstore.exceptions.DressShirtException;
+import com.galvanize.clothingstore.exceptions.ShirtSizeException;
 import com.galvanize.clothingstore.model.*;
 import com.galvanize.clothingstore.repository.JacketRepository;
 import com.galvanize.clothingstore.repository.ShirtRepository;
@@ -12,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -60,6 +63,45 @@ public class ProductServiceTest {
         Shirt actual = service.addShirt(shirt);
         assertEquals(shirt, actual);
         verify(shirtRepository).save(shirt);
+    }
+    @Test
+    public void whenAddShirt_TypeDress(){
+        Shirt shirt = new Shirt(ShirtType.DRESS.name(), 0, 0,
+                "10","blue", true, 2000l);
+
+        DressShirtException exception =
+                assertThrows(DressShirtException.class, ()->{
+                    service.addShirt(shirt);
+                });
+
+        assertEquals("Please enter sleeve and neck measurements for Dress shirt!", exception.getMessage());
+
+
+    }
+
+    @Test
+    public void whenAddShirt_TypeAnyOtherThanDress(){
+        Shirt shirt1 = new Shirt(ShirtType.TEE.name(), 1, 1,
+                "","blue", true, 2000l);
+
+        ShirtSizeException exception =
+                assertThrows(ShirtSizeException.class, ()->{
+                    service.addShirt(shirt1);
+                });
+
+        assertEquals("Please enter size for shirt!", exception.getMessage());
+
+        Shirt shirt2 = new Shirt(ShirtType.TEE.name(), 1, 1,
+                "8","blue", true, 2000l);
+
+        exception =
+                assertThrows(ShirtSizeException.class, ()->{
+                    service.addShirt(shirt2);
+                });
+
+        assertEquals("Please enter size for shirt!", exception.getMessage());
+
+
     }
 
 }
