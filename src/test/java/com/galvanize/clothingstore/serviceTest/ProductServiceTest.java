@@ -116,4 +116,21 @@ public class ProductServiceTest {
         assertEquals(1, actual.size());
         verify(shoesRepository).findAll();
     }
+
+    @Test
+    public void getAllShirts(){
+
+        List<Shirt> shirts = List.of(
+                new Shirt(ShirtType.TEE.name(), 0, 0,
+                        "10","blue", true, 2000l),
+        new Shirt(ShirtType.TEE.name(), 0, 0,
+                "8","red", false, 2000l)
+        );
+
+        when(shirtRepository.findAll()).thenReturn(shirts);
+        List<Shirt> actual = service.getAllShirts();
+        assertEquals(shirts, actual);
+        assertEquals(2, actual.size());
+        verify(shirtRepository).findAll();
+    }
 }

@@ -28,6 +28,7 @@ public class ProductsControllerTest {
     private ObjectMapper objectMapper;
 
 
+
     @Test
     public void whenAddJacketToStore() throws Exception {
         Jacket jacket = new Jacket(Season.WINTER.name(), "10", "Blue",
@@ -88,7 +89,7 @@ public class ProductsControllerTest {
 
     @Test
     public void whenAddShirtToStore() throws Exception {
-        Shirt shirt = new Shirt(ShirtType.TEE.name(), 3, 5,
+        Shirt shirt = new Shirt(ShirtType.TEE.name(), 0, 0,
                 "10","blue", true, 2000l);
 
         mockMvc
@@ -97,8 +98,8 @@ public class ProductsControllerTest {
                         .content(objectMapper.writeValueAsString(shirt)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.type").value("TEE"))
-                .andExpect(jsonPath("$.sleeve").value("3"))
-                .andExpect(jsonPath("$.neck").value("5"))
+                .andExpect(jsonPath("$.sleeve").value("0"))
+                .andExpect(jsonPath("$.neck").value("0"))
                 .andExpect(jsonPath("$.size").value("10"))
                 .andExpect(jsonPath("$.color").value("blue"))
                 .andExpect(jsonPath("$.longSleeve").value("true"))
@@ -140,6 +141,33 @@ public class ProductsControllerTest {
                         instanceof ShirtSizeException))
                 .andExpect(result -> assertEquals("Please enter size for shirt!",
                         result.getResolvedException().getMessage()));
+    }
+
+    @Test
+    public void whenGetShirt() throws Exception {
+        Shirt shirt = new Shirt(ShirtType.TEE.name(), 0, 0,
+                "10","blue", true, 2000l);
+
+        mockMvc
+                .perform(post("/api/products/shirts")
+                        .contentType((MediaType.APPLICATION_JSON))
+                        .content(objectMapper.writeValueAsString(shirt)))
+                .andExpect(status().isCreated());
+
+
+        mockMvc
+                .perform(get("/api/products/shirts"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(1))
+                .andExpect(jsonPath("[0].type").value("TEE"))
+                .andExpect(jsonPath("[0].sleeve").value("0"))
+                .andExpect(jsonPath("[0].neck").value("0"))
+                .andExpect(jsonPath("[0].size").value("10"))
+                .andExpect(jsonPath("[0].color").value("blue"))
+                .andExpect(jsonPath("[0].longSleeve").value("true"))
+                .andExpect(jsonPath("[0].price").value("2000"));
+
+
 
 
     }

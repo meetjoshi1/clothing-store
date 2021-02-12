@@ -45,4 +45,10 @@ public class ProductsController {
 
     }
 
+    @GetMapping("/shirts")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Shirt> getAllShirt(){
+        return productService.getAllShirts();
+
+    }
 }
