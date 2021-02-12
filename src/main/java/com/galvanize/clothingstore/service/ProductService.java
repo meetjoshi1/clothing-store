@@ -52,4 +52,8 @@ public class ProductService {
     public List<Shirt> getAllShirts() {
         return shirtRepository.findAll();
     }
+
+    public List<Jacket> getAllJackets() {
+        return jacketRepository.findAll();
+    }
 }

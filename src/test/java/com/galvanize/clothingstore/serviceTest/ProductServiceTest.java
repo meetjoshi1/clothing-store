@@ -14,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -108,7 +109,7 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void getShoesFromTheStore(){
+    public void getShoesFromTheStore() {
         List<Shoes> shoes = Arrays.asList(new Shoes(8, "4", ShoeType.sandal, "MATERIAL", "NIKE", true, "BLUE", 80l));
         when(shoesRepository.findAll()).thenReturn(shoes);
         List<Shoes> actual = service.getAllShoes();
@@ -132,5 +133,16 @@ public class ProductServiceTest {
         assertEquals(shirts, actual);
         assertEquals(2, actual.size());
         verify(shirtRepository).findAll();
+    }
+
+    @Test
+    public void getJacketsFromTheStore() {
+        List<Jacket> jackets = Collections.singletonList(new Jacket(Season.WINTER.name(), "10", "Blue",
+                "style", true, 1900L));
+        when(jacketRepository.findAll()).thenReturn(jackets);
+        List<Jacket> actual = service.getAllJackets();
+        assertEquals(jackets, actual);
+        assertEquals(1, actual.size());
+        verify(jacketRepository).findAll();
     }
 }

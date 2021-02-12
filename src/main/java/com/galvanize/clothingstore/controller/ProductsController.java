@@ -51,4 +51,10 @@ public class ProductsController {
         return productService.getAllShirts();
 
     }
+    @GetMapping("/jackets")
+    public List<Jacket> getJackets(){
+        return productService.getAllJackets();
+
+    }
+
 }
